@@ -1,6 +1,7 @@
 __author__ = 'safiyat@zopper.com'
 
 import mongoengine as me
+import datetime
 
 
 class UserData(me.Document):
@@ -9,6 +10,7 @@ class UserData(me.Document):
     useremail = me.StringField(required=False)
     userphone = me.StringField(required=False)
     source = me.StringField(required=True)
+    timestamp = me.DateTimeField(default=datetime.datetime.now, required=True)
 
     def save_user(self, data, source):
         me.connect('userdata')
@@ -30,12 +32,11 @@ class UserData(me.Document):
                 source = 'Google+'
             except Exception as e:
                 pass
-            print '%s %s %s %s' % (username, userphone, useremail, source)
         elif source == 'facebook':
             pass
 
-        h = UserData(username=username, userphone=userphone, useremail=useremail, source=source )
+        h = UserData(username=username, userphone=userphone, useremail=useremail, source=source)
         h.save()
 
     def __unicode__(self):
-        return "%s - %s" % (self.username, self.useremail)
+        return "%s - %s - %s - %s" % (self.username, self.userphone, self.useremail, self.source)

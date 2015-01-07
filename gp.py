@@ -11,6 +11,7 @@ from models import UserData
 
 flow = oc.flow_from_clientsecrets('client_secrets.json', scope='https://www.google.com/m8/feeds', redirect_uri='http://localhost:8080/gapicallback')
 
+
 def login():
     auth_uri = flow.step1_get_authorize_url()
     return auth_uri
@@ -28,9 +29,9 @@ def check_login(request):
 
     query = gdata.contacts.client.ContactsQuery()
     query.max_results = 1000
-    feed = client.GetContacts(q = query)
+    feed = client.GetContacts(q=query)
 
-    user=UserData()
+    user = UserData()
     for x in feed.entry:
         user.save_user(x, 'google')
 
